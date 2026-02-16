@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<!--
+  Ghibli Hesap Makinesi — FXML Yapisi
+  Hesap makinesi + Yan geçmiş paneli
+-->
+<HBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="calculator.CalculatorController"
+      spacing="12"
+      prefWidth="340" prefHeight="680"
+      stylesheets="@styles.css"
+      alignment="TOP_LEFT">
+      
+    <!-- Sol Taraf: Hesap Makinesi -->
+    <VBox spacing="12" prefWidth="340" HBox.hgrow="ALWAYS">
+
+    <!-- Ekran Alani -->
+    <VBox styleClass="display-container" spacing="2" VBox.vgrow="NEVER">
+        <Label fx:id="expressionLabel" styleClass="expression-label"
+               text="" maxWidth="Infinity" alignment="CENTER_RIGHT"/>
+        <Label fx:id="resultLabel" styleClass="result-label"
+               text="0" maxWidth="Infinity" alignment="CENTER_RIGHT"/>
+        <Label fx:id="errorLabel" styleClass="error-label" visible="false" managed="false"
+               text="" maxWidth="Infinity" alignment="CENTER_RIGHT" wrapText="true"/>
+    </VBox>
+
+    <!-- Bilimsel Fonksiyonlar Paneli (toggle) -->
+    <VBox fx:id="scientificPanel" styleClass="scientific-panel" visible="false" managed="false"
+          spacing="8" VBox.vgrow="NEVER">
+        <GridPane hgap="8" vgap="8">
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="20"/>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="20"/>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="20"/>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="20"/>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="20"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints vgrow="ALWAYS"/>
+                <RowConstraints vgrow="ALWAYS"/>
+                <RowConstraints vgrow="ALWAYS"/>
+            </rowConstraints>
+            
+            <!-- Satir 0: Bellek butonları -->
+            <Button text="MC" onAction="#handleMemory" styleClass="btn-memory"
+                    GridPane.columnIndex="0" GridPane.rowIndex="0" maxWidth="Infinity"/>
+            <Button text="MR" onAction="#handleMemory" styleClass="btn-memory"
+                    GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity"/>
+            <Button text="M+" onAction="#handleMemory" styleClass="btn-memory"
+                    GridPane.columnIndex="2" GridPane.rowIndex="0" maxWidth="Infinity"/>
+            <Button text="M-" onAction="#handleMemory" styleClass="btn-memory"
+                    GridPane.columnIndex="3" GridPane.rowIndex="0" maxWidth="Infinity"/>
+            <Label fx:id="memoryIndicator" text="" styleClass="memory-indicator"
+                   GridPane.columnIndex="4" GridPane.rowIndex="0" maxWidth="Infinity" alignment="CENTER"/>
+            
+            <!-- Satir 1: Trigonometri -->
+            <Button text="sin" onAction="#handleFunction" styleClass="btn-function"
+                    GridPane.columnIndex="0" GridPane.rowIndex="1" maxWidth="Infinity"/>
+            <Button text="cos" onAction="#handleFunction" styleClass="btn-function"
+                    GridPane.columnIndex="1" GridPane.rowIndex="1" maxWidth="Infinity"/>
+            <Button text="tan" onAction="#handleFunction" styleClass="btn-function"
+                    GridPane.columnIndex="2" GridPane.rowIndex="1" maxWidth="Infinity"/>
+            <Button text="√" onAction="#handleFunction" styleClass="btn-function"
+                    GridPane.columnIndex="3" GridPane.rowIndex="1" maxWidth="Infinity"/>
+            <Button text="!" onAction="#handleInput" styleClass="btn-function"
+                    GridPane.columnIndex="4" GridPane.rowIndex="1" maxWidth="Infinity"/>
+            
+            <!-- Satir 2: Logaritma ve sabitler -->
+            <Button text="ln" onAction="#handleFunction" styleClass="btn-function"
+                    GridPane.columnIndex="0" GridPane.rowIndex="2" maxWidth="Infinity"/>
+            <Button text="log" onAction="#handleFunction" styleClass="btn-function"
+                    GridPane.columnIndex="1" GridPane.rowIndex="2" maxWidth="Infinity"/>
+            <Button text="abs" onAction="#handleFunction" styleClass="btn-function"
+                    GridPane.columnIndex="2" GridPane.rowIndex="2" maxWidth="Infinity"/>
+            <Button text="π" onAction="#handleInput" styleClass="btn-function"
+                    GridPane.columnIndex="3" GridPane.rowIndex="2" maxWidth="Infinity"/>
+            <Button text="e" onAction="#handleInput" styleClass="btn-function"
+                    GridPane.columnIndex="4" GridPane.rowIndex="2" maxWidth="Infinity"/>
+        </GridPane>
+    </VBox>
+
+    <!-- Buton Izgarasi -->
+    <GridPane fx:id="buttonGrid" styleClass="button-grid"
+              hgap="10" vgap="10" VBox.vgrow="ALWAYS">
+
+        <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="25"/>
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="25"/>
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="25"/>
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="25"/>
+        </columnConstraints>
+
+        <rowConstraints>
+            <RowConstraints vgrow="ALWAYS" percentHeight="16.6"/>
+            <RowConstraints vgrow="ALWAYS" percentHeight="16.6"/>
+            <RowConstraints vgrow="ALWAYS" percentHeight="16.6"/>
+            <RowConstraints vgrow="ALWAYS" percentHeight="16.6"/>
+            <RowConstraints vgrow="ALWAYS" percentHeight="16.6"/>
+            <RowConstraints vgrow="ALWAYS" percentHeight="16.6"/>
+        </rowConstraints>
+
+        <!-- Satir 0: C  (  )  BS -->
+        <Button text="C" onAction="#handleSpecial" styleClass="btn-special"
+                GridPane.columnIndex="0" GridPane.rowIndex="0" maxWidth="Infinity" maxHeight="Infinity"/>
+        <Button text="(" onAction="#handleInput" styleClass="btn-special"
+                GridPane.columnIndex="1" GridPane.rowIndex="0" maxWidth="Infinity" maxHeight="Infinity"/>
+        <Button text=")" onAction="#handleInput" styleClass="btn-special"
+                GridPane.columnIndex="2" GridPane.rowIndex="0" maxWidth="Infinity" maxHeight="Infinity"/>
+        <Button fx:id="backspaceBtn" text="BS" onAction="#handleSpecial" styleClass="btn-special"
+                GridPane.columnIndex="3" GridPane.rowIndex="0" maxWidth="Infinity" maxHeight="Infinity"/>
+
+        <!-- Satir 1: ^  %  SCI  GCM  / -->
+        <Button text="^" onAction="#handleInput" styleClass="btn-secondary"
+                GridPane.columnIndex="0" GridPane.rowIndex="1" maxWidth="Infinity" maxHeight="Infinity"/>
+        <Button fx:id="modBtn" onAction="#handleInput" styleClass="btn-secondary"
+                GridPane.columnIndex="1" GridPane.rowIndex="1" maxWidth="Infinity" maxHeight="Infinity"/>
+        <Button text="SCI" onAction="#handleScientific" styleClass="btn-history"
+                GridPane.columnIndex="2" GridPane.rowIndex="1" maxWidth="Infinity" maxHeight="Infinity" style="-fx-font-size: 14;"/>
+        <Button text="GCM" onAction="#handleHistory" styleClass="btn-history"
+                GridPane.columnIndex="3" GridPane.rowIndex="1" maxWidth="Infinity" maxHeight="Infinity" style="-fx-font-size: 14;"/>
+
+        <!-- Satir 2: /  7  8  9 -->
+        <Button text="/" onAction="#handleInput" styleClass="btn-operator"
+                GridPane.columnIndex="0" GridPane.rowIndex="2" maxWidth="Infinity" maxHeight="Infinity"/>
+        <Button text="7" onAction="#handleInput" styleClass="btn-number"
+                GridPane.columnIndex="1" GridPane.rowIndex="2" maxWidth="Infinity" maxHeight="Infinity"/>
+        <Button text="8" onAction="#handleInput" styleClass="btn-number"
+                GridPane.columnIndex="2" GridPane.rowIndex="2" maxWidth="Infinity" maxHeight="Infinity"/>
+        <Button text="9" onAction="#handleInput" styleClass="btn-number"
+                GridPane.columnIndex="3" GridPane.rowIndex="2" maxWidth="Infinity" maxHeight="Infinity"/>
+
+        <!-- Satir 3: x  4  5  6 -->
+        <Button text="x" onAction="#handleInput" styleClass="btn-operator"
+                GridPane.columnIndex="0" GridPane.rowIndex="3" maxWidth="Infinity" maxHeight="Infinity"/>
+        <Button text="4" onAction="#handleInput" styleClass="btn-number"
+                GridPane.columnIndex="1" GridPane.rowIndex="3" maxWidth="Infinity" maxHeight="Infinity"/>
+        <Button text="5" onAction="#handleInput" styleClass="btn-number"
+                GridPane.columnIndex="2" GridPane.rowIndex="3" maxWidth="Infinity" maxHeight="Infinity"/>
+        <Button text="6" onAction="#handleInput" styleClass="btn-number"
+                GridPane.columnIndex="3" GridPane.rowIndex="3" maxWidth="Infinity" maxHeight="Infinity"/>
+
+        <!-- Satir 4: -  1  2  3 -->
+        <Button text="-" onAction="#handleInput" styleClass="btn-operator"
+                GridPane.columnIndex="0" GridPane.rowIndex="4" maxWidth="Infinity" maxHeight="Infinity"/>
+        <Button text="1" onAction="#handleInput" styleClass="btn-number"
+                GridPane.columnIndex="1" GridPane.rowIndex="4" maxWidth="Infinity" maxHeight="Infinity"/>
+        <Button text="2" onAction="#handleInput" styleClass="btn-number"
+                GridPane.columnIndex="2" GridPane.rowIndex="4" maxWidth="Infinity" maxHeight="Infinity"/>
+        <Button text="3" onAction="#handleInput" styleClass="btn-number"
+                GridPane.columnIndex="3" GridPane.rowIndex="4" maxWidth="Infinity" maxHeight="Infinity"/>
+
+        <!-- Satir 5: +  0  .  = -->
+        <Button text="+" onAction="#handleInput" styleClass="btn-operator"
+                GridPane.columnIndex="0" GridPane.rowIndex="5" maxWidth="Infinity" maxHeight="Infinity"/>
+        <Button text="0" onAction="#handleInput" styleClass="btn-number"
+                GridPane.columnIndex="1" GridPane.rowIndex="5" maxWidth="Infinity" maxHeight="Infinity"/>
+        <Button text="." onAction="#handleInput" styleClass="btn-number"
+                GridPane.columnIndex="2" GridPane.rowIndex="5" maxWidth="Infinity" maxHeight="Infinity"/>
+        <Button text="=" onAction="#handleEquals" styleClass="btn-equal"
+                GridPane.columnIndex="3" GridPane.rowIndex="5" maxWidth="Infinity" maxHeight="Infinity"/>
+    </GridPane>
+    
+    </VBox>
+    
+    <!-- Sağ Taraf: Geçmiş Paneli (Kart) - Başlangıçta Gizli -->
+    <VBox fx:id="historyPanel" styleClass="history-panel-side" visible="false" managed="false"
+          spacing="12" prefWidth="240" HBox.hgrow="NEVER">
+        <Label text="📜 İşlem Geçmişi" styleClass="history-title"/>
+        <ListView fx:id="historyList" styleClass="history-list" VBox.vgrow="ALWAYS"/>
+        <Button text="Geçmişi Temizle" onAction="#handleClearHistory"
+                styleClass="btn-clear-history" maxWidth="Infinity"/>
+    </VBox>
+
+</HBox>
