@@ -34,8 +34,8 @@ Modern ve özellik zengin bilimsel hesap makinesi. JavaFX ile geliştirilmiştir
 **Adımlar:**
 ```bash
 # Projeyi klonlayın
-git clone https://github.com/KULLANICI_ADIN/javafx-calculator.git
-cd javafx-calculator
+git clone https://github.com/yusufenesbaranpro/Ghibli-Calculater.git
+cd Ghibli-Calculater
 
 # Windows için:
 .\gradlew.bat run
